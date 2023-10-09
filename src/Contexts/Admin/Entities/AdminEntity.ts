@@ -1,10 +1,18 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { BaseEntity } from "../../../Shared/Contexts/BaseEntity";
+import { TeamEntity } from "../../Team/Entities/TeamEntity";
 
 export interface IAdmin {
   id_admin: number;
   email: string;
   password: string;
+  team: TeamEntity;
 }
 
 export type IAdminToUpdate = Omit<IAdmin, "id_admin">;
@@ -19,6 +27,10 @@ export class AdminEntity extends BaseEntity implements IAdmin {
 
   @Column({ nullable: false })
   password: string;
+
+  @OneToOne(() => TeamEntity, (team) => team.admin)
+  @JoinColumn({ name: "id_team" })
+  team!: TeamEntity;
 
   constructor(email: string, password: string) {
     super();

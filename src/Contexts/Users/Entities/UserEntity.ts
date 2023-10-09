@@ -1,5 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { BaseEntity } from "../../../Shared/Contexts/BaseEntity";
+import { RoleEntity } from "../../Roles/Entities/RoleEntity";
+import { TeamEntity } from "../../Team/Entities/TeamEntity";
 
 export interface IUser {
   id_user: number;
@@ -8,6 +16,8 @@ export interface IUser {
   birthdate: string;
   cedula: string;
   phone: string;
+  role: RoleEntity;
+  team: TeamEntity;
 }
 
 export type IUserToUpdate = Omit<IUser, "id_user">;
@@ -32,12 +42,22 @@ export class UserEntity extends BaseEntity implements IUser {
   @Column({ nullable: false })
   phone: string;
 
+  @ManyToOne(() => RoleEntity, (role) => role.users)
+  @JoinColumn({ name: "id_role" })
+  role: RoleEntity;
+
+  @ManyToOne(() => TeamEntity, (team) => team.users)
+  @JoinColumn({ name: "id_team" })
+  team: TeamEntity;
+
   constructor(
     first_name: string,
     last_name: string,
     birthdate: string,
     cedula: string,
-    phone: string
+    phone: string,
+    role: RoleEntity,
+    team: TeamEntity
   ) {
     super();
     this.first_name = first_name;
@@ -45,5 +65,7 @@ export class UserEntity extends BaseEntity implements IUser {
     this.birthdate = birthdate;
     this.cedula = cedula;
     this.phone = phone;
+    this.role = role;
+    this.team = team;
   }
 }

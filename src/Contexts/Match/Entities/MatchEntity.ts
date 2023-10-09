@@ -1,5 +1,13 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { BaseEntity } from "../../../Shared/Contexts/BaseEntity";
+import { TeamEntity } from "../../Team/Entities/TeamEntity";
+import { TournamentEntity } from "../../Tournament/Entities/TournamentEntity";
 
 export interface IMatch {
   id_match: number;
@@ -12,6 +20,8 @@ export interface IMatch {
   shots_on_goal: number;
   completed_passes: number;
   fouls_comitted: number;
+  team: TeamEntity;
+  tournament: TournamentEntity;
 }
 
 export type IMatchToUpdate = Omit<IMatch, "id_match">;
@@ -48,6 +58,14 @@ export class MatchEntity extends BaseEntity implements IMatch {
   @Column({ nullable: false })
   fouls_comitted: number;
 
+  @ManyToOne(() => TeamEntity, (team) => team.matches)
+  @JoinColumn({ name: "id_team" })
+  team: TeamEntity;
+
+  @ManyToOne(() => TournamentEntity, (tournament) => tournament.matches)
+  @JoinColumn({ name: "id_tournament" })
+  tournament: TournamentEntity;
+
   constructor(
     date: string,
     team_goals: number,
@@ -57,7 +75,9 @@ export class MatchEntity extends BaseEntity implements IMatch {
     shots_taken: number,
     shots_on_goal: number,
     completed_passes: number,
-    fouls_comitted: number
+    fouls_comitted: number,
+    team: TeamEntity,
+    tournament: TournamentEntity
   ) {
     super();
     this.date = date;
@@ -69,5 +89,7 @@ export class MatchEntity extends BaseEntity implements IMatch {
     this.shots_on_goal = shots_on_goal;
     this.completed_passes = completed_passes;
     this.fouls_comitted = fouls_comitted;
+    this.team = team;
+    this.tournament = tournament;
   }
 }
