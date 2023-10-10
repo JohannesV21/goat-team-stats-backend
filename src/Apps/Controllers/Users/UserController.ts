@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import userService from "../../../Contexts/Users/Services/UserServices";
-import { ErrorResponse } from "../../../Shared/Contexts/ErrorResponse";
 import { handleErrorResponse } from "../../../Helpers/handleErrorResponse";
 import {
   IUserToUpdate,
@@ -19,7 +18,7 @@ class UserController {
     }
   }
 
-  public async GetUserById(req: Request, res: Response) {
+  public async GetUserById(req: Request, res: Response): Promise<void> {
     try {
       const id_user: number = Number(req.params.id_user);
 
@@ -30,7 +29,7 @@ class UserController {
     }
   }
 
-  public async CreateUser(req: Request, res: Response) {
+  public async CreateUser(req: Request, res: Response): Promise<void> {
     try {
       const { first_name, last_name, birthdate, cedula, phone, role, team } =
         req.body;
@@ -52,7 +51,7 @@ class UserController {
     }
   }
 
-  public async UpdateUser(req: Request, res: Response) {
+  public async UpdateUser(req: Request, res: Response): Promise<void> {
     try {
       const id_user: number = Number(req.params.id_user);
       const { first_name, last_name, birthdate, cedula, phone, role, team } =
@@ -78,7 +77,7 @@ class UserController {
     }
   }
 
-  public async DeleteUser(req: Request, res: Response) {
+  public async DeleteUser(req: Request, res: Response): Promise<void> {
     try {
       const id_user: number = Number(req.params.id_user);
 

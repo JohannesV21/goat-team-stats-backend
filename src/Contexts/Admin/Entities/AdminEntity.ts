@@ -12,7 +12,6 @@ export interface IAdmin {
   id_admin: number;
   email: string;
   password: string;
-  team: TeamEntity;
 }
 
 export type IAdminToUpdate = Omit<IAdmin, "id_admin">;
