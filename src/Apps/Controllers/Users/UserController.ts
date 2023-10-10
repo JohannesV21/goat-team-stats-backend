@@ -6,6 +6,8 @@ import {
   IUserToUpdate,
   UserEntity,
 } from "../../../Contexts/Users/Entities/UserEntity";
+import roleService from "../../../Contexts/Roles/Services/RoleService";
+import teamService from "../../../Contexts/Team/Services/TeamService";
 
 class UserController {
   public async GetAllUsers(_req: Request, res: Response): Promise<void> {
@@ -56,16 +58,35 @@ class UserController {
       const { first_name, last_name, birthdate, cedula, phone, role, team } =
         req.body;
 
+      const rolDB = await roleService.GetRoleById(role);
+      const teamDB = await teamService.GetTeamById(team);
+
       const userToUpdate: IUserToUpdate = {
         first_name,
         last_name,
         birthdate,
         cedula,
         phone,
-        role,
-        team,
+        role: rolDB,
+        team: teamDB,
       };
-    } catch (error) {}
+
+      const updateUser = await userService.UpdateUser(id_user, userToUpdate);
+      res.status(200).json(updateUser);
+    } catch (error) {
+      handleErrorResponse({ error, res });
+    }
+  }
+
+  public async DeleteUser(req: Request, res: Response) {
+    try {
+      const id_user: number = Number(req.params.id_user);
+
+      const deleteUser = await userService.DeleteUser(id_user);
+      res.status(200).json(deleteUser);
+    } catch (error) {
+      handleErrorResponse({ error, res });
+    }
   }
 }
 

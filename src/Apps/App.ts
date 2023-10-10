@@ -1,6 +1,7 @@
 import { AppDataSource } from "../Configs/DBConfig";
 import { ServerConfig } from "../Configs/ServerConfig";
 import indexRoutes from "./Routes/IndexRoutes";
+import userRoutes from "./Routes/Users/UserRoutes";
 
 class App extends ServerConfig {
   constructor() {
@@ -11,6 +12,7 @@ class App extends ServerConfig {
 
   private Routes(): void {
     this.app.use("/index", indexRoutes);
+    this.app.use("/users", userRoutes);
   }
 
   // Database initialization
