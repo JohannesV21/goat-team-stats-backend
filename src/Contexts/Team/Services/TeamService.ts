@@ -13,7 +13,9 @@ export class TeamService implements ITeamService {
 
   public async GetAllTeams(): Promise<TeamEntity[]> {
     try {
-      const allTeams = await this.TeamRepository.find();
+      const allTeams = await this.TeamRepository.find({
+        relations: { admin: true, users: { role: true } },
+      });
       return allTeams;
     } catch (error) {
       console.error(error);
@@ -83,7 +85,7 @@ export class TeamService implements ITeamService {
 
       dbTeam.name = teamUpdate.name;
       dbTeam.rif = teamUpdate.rif;
-      9;
+
       const updateTeam = await this.TeamRepository.save(dbTeam);
       return new TeamResponse("Successfully update team", 200, updateTeam);
     } catch (error) {

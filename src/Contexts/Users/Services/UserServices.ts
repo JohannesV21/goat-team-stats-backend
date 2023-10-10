@@ -15,7 +15,7 @@ export class UserService implements IUserService {
     try {
       const allUsers = await this.UserRepository.find({
         order: { createdAt: "DESC" },
-        relations: { role: true },
+        relations: { role: true, team: true },
       });
 
       return allUsers;

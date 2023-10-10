@@ -20,8 +20,8 @@ export interface IMatch {
   shots_on_goal: number;
   completed_passes: number;
   fouls_comitted: number;
-  // team: TeamEntity;
-  // tournament: TournamentEntity;
+  team: TeamEntity;
+  tournament?: TournamentEntity;
 }
 
 export type IMatchToUpdate = Omit<IMatch, "id_match">;
@@ -60,11 +60,11 @@ export class MatchEntity extends BaseEntity implements IMatch {
 
   @ManyToOne(() => TeamEntity, (team) => team.matches)
   @JoinColumn({ name: "id_team" })
-  team!: TeamEntity;
+  team: TeamEntity;
 
   @ManyToOne(() => TournamentEntity, (tournament) => tournament.matches)
   @JoinColumn({ name: "id_tournament" })
-  tournament!: TournamentEntity;
+  tournament?: TournamentEntity;
 
   constructor(
     date: string,
@@ -75,9 +75,9 @@ export class MatchEntity extends BaseEntity implements IMatch {
     shots_taken: number,
     shots_on_goal: number,
     completed_passes: number,
-    fouls_comitted: number
-    // team: TeamEntity,
-    // tournament: TournamentEntity
+    fouls_comitted: number,
+    team: TeamEntity,
+    tournament?: TournamentEntity
   ) {
     super();
     this.date = date;
@@ -89,7 +89,7 @@ export class MatchEntity extends BaseEntity implements IMatch {
     this.shots_on_goal = shots_on_goal;
     this.completed_passes = completed_passes;
     this.fouls_comitted = fouls_comitted;
-    // this.team = team;
-    // this.tournament = tournament;
+    this.team = team;
+    this.tournament = tournament;
   }
 }

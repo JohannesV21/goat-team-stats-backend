@@ -5,6 +5,8 @@ import {
   IMatchToUpdate,
   MatchEntity,
 } from "../../../Contexts/Match/Entities/MatchEntity";
+import teamService from "../../../Contexts/Team/Services/TeamService";
+import tournamentService from "../../../Contexts/Tournament/Services/TournamentService";
 
 class MatchController {
   public async GetAllMatches(_req: Request, res: Response): Promise<void> {
@@ -39,6 +41,8 @@ class MatchController {
         shots_on_goal,
         completed_passes,
         fouls_comitted,
+        team,
+        tournament,
       } = req.body;
 
       const dataToCreateMatch = new MatchEntity(
@@ -50,7 +54,9 @@ class MatchController {
         shots_taken,
         shots_on_goal,
         completed_passes,
-        fouls_comitted
+        fouls_comitted,
+        team,
+        tournament
       );
 
       const createMatch = await matchService.CreateMatch(dataToCreateMatch);
@@ -73,7 +79,14 @@ class MatchController {
         shots_on_goal,
         completed_passes,
         fouls_comitted,
+        team,
+        tournament,
       } = req.body;
+
+      const teamDB = await teamService.GetTeamById(team);
+      const tournamentDB = await tournamentService.GetTournamentById(
+        tournament
+      );
 
       const matchToUpdate: IMatchToUpdate = {
         date,
@@ -85,6 +98,8 @@ class MatchController {
         shots_on_goal,
         completed_passes,
         fouls_comitted,
+        team: teamDB,
+        tournament: tournamentDB,
       };
 
       const updateMatch = await matchService.UpdateMatch(

@@ -36,7 +36,7 @@ export class UserEntity extends BaseEntity implements IUser {
   @Column({ nullable: false })
   birthdate: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   cedula: string;
 
   @Column({ nullable: false })

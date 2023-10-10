@@ -1,6 +1,8 @@
 import {
   Column,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -15,33 +17,33 @@ export interface ITeam {
   id_team: number;
   name: string;
   rif: string;
-  // admin: AdminEntity;
+  admin: AdminEntity;
 }
 
-export type ITeamToUpdate = Omit<ITeam, "id_team">;
+// export type ITeamToUpdate = Omit<ITeam, "id_team">;
 
-// export interface ITeamToUpdate {
-//   name: string;
-//   rif: string;
-//   admin: AdminEntity;
-//   users: UserEntity;
-//   matches: MatchEntity;
-//   tournaments: TournamentEntity;
-// }
+export interface ITeamToUpdate {
+  name: string;
+  rif: string;
+  users?: UserEntity;
+  matches?: MatchEntity;
+  tournaments?: TournamentEntity;
+}
 
 @Entity({ name: "Teams" })
 export class TeamEntity extends BaseEntity implements ITeam {
   @PrimaryGeneratedColumn()
   id_team!: number;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   name: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   rif: string;
 
-  @OneToOne(() => AdminEntity, (admin) => admin.team)
-  admin!: AdminEntity;
+  @ManyToOne(() => AdminEntity, (admin) => admin.teams)
+  @JoinColumn({ name: "id_admin" })
+  admin: AdminEntity;
 
   @OneToMany(() => UserEntity, (users) => users.team)
   users!: UserEntity[];
@@ -52,10 +54,10 @@ export class TeamEntity extends BaseEntity implements ITeam {
   @OneToMany(() => TournamentEntity, (torunaments) => torunaments.team)
   tournaments!: TournamentEntity[];
 
-  constructor(name: string, rif: string) {
+  constructor(name: string, rif: string, admin: AdminEntity) {
     super();
     this.name = name;
     this.rif = rif;
-    // this.admin = admin;
+    this.admin = admin;
   }
 }

@@ -21,6 +21,8 @@ class AdminController {
     try {
       const id_admin: number = Number(req.params.id_admin);
 
+      console.log(id_admin);
+
       const adminById = await adminService.GetAdminById(id_admin);
       res.status(200).json(adminById);
     } catch (error) {

@@ -1,10 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { BaseEntity } from "../../../Shared/Contexts/BaseEntity";
 import { TeamEntity } from "../../Team/Entities/TeamEntity";
 
@@ -21,15 +15,14 @@ export class AdminEntity extends BaseEntity implements IAdmin {
   @PrimaryGeneratedColumn()
   id_admin!: number;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   email: string;
 
   @Column({ nullable: false })
   password: string;
 
-  @OneToOne(() => TeamEntity, (team) => team.admin)
-  @JoinColumn({ name: "id_team" })
-  team!: TeamEntity;
+  @OneToMany(() => TeamEntity, (teams) => teams.admin)
+  teams!: TeamEntity;
 
   constructor(email: string, password: string) {
     super();

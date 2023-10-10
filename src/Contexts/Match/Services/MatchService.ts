@@ -13,7 +13,9 @@ export class MatchService implements IMatchService {
 
   public async GetAllMatches(): Promise<MatchEntity[]> {
     try {
-      const allMatches = await this.MatchRepository.find();
+      const allMatches = await this.MatchRepository.find({
+        relations: { team: true, tournament: true },
+      });
       return allMatches;
     } catch (error) {
       console.error(error);

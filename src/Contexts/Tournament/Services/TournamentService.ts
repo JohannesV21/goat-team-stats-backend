@@ -19,7 +19,9 @@ export class TournamentService implements ITournamentService {
 
   public async GetAllTournaments(): Promise<TournamentEntity[]> {
     try {
-      const allTournaments = await this.TournamentRepository.find();
+      const allTournaments = await this.TournamentRepository.find({
+        relations: { team: true, matches: true },
+      });
       return allTournaments;
     } catch (error) {
       console.error(error);

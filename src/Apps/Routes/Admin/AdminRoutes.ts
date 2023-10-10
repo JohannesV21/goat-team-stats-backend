@@ -7,10 +7,10 @@ class AdminRoutes implements IRoutes {
 
   constructor() {
     this.router.get("/", adminController.GetAllAdmins);
-    this.router.get("/:id_user", adminController.GetAdminById);
+    this.router.get("/:id_admin", adminController.GetAdminById);
     this.router.post("/", adminController.CreateAdmin);
-    this.router.put("/:id_user", adminController.UpdateAdmin);
-    this.router.delete("/:id_user", adminController.DeleteAdmin);
+    this.router.put("/:id_admin", adminController.UpdateAdmin);
+    this.router.delete("/:id_admin", adminController.DeleteAdmin);
   }
 }
 

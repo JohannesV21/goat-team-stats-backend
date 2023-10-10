@@ -29,9 +29,9 @@ class TeamController {
 
   public async CreateTeam(req: Request, res: Response) {
     try {
-      const { name, rif } = req.body;
+      const { name, rif, admin } = req.body;
 
-      const dataToCreateTeam = new TeamEntity(name, rif);
+      const dataToCreateTeam = new TeamEntity(name, rif, admin);
 
       const createTeam = await teamService.CreateTeam(dataToCreateTeam);
       res.status(200).json(createTeam);
