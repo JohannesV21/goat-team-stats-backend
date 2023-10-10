@@ -44,7 +44,7 @@ class AdminController {
   public async UpdateAdmin(req: Request, res: Response): Promise<void> {
     try {
       const id_admin: number = Number(req.params.id_admin);
-      const { email, password, team } = req.body;
+      const { email, password } = req.body;
 
       const adminToUpdate: IAdminToUpdate = {
         email,

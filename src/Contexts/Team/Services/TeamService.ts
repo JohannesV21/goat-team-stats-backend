@@ -83,8 +83,7 @@ export class TeamService implements ITeamService {
 
       dbTeam.name = teamUpdate.name;
       dbTeam.rif = teamUpdate.rif;
-      dbTeam.admin = teamUpdate.admin;
-
+      9;
       const updateTeam = await this.TeamRepository.save(dbTeam);
       return new TeamResponse("Successfully update team", 200, updateTeam);
     } catch (error) {

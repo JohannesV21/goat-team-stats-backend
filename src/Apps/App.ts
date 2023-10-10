@@ -15,6 +15,7 @@ class App extends ServerConfig {
     this.app.use("/index", indexRoutes);
     this.app.use("/users", userRoutes);
     this.app.use("/admin", adminRoutes);
+    this.app.use("/team", adminRoutes);
   }
 
   // Database initialization

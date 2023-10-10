@@ -15,10 +15,19 @@ export interface ITeam {
   id_team: number;
   name: string;
   rif: string;
-  admin: AdminEntity;
+  // admin: AdminEntity;
 }
 
 export type ITeamToUpdate = Omit<ITeam, "id_team">;
+
+// export interface ITeamToUpdate {
+//   name: string;
+//   rif: string;
+//   admin: AdminEntity;
+//   users: UserEntity;
+//   matches: MatchEntity;
+//   tournaments: TournamentEntity;
+// }
 
 @Entity({ name: "Teams" })
 export class TeamEntity extends BaseEntity implements ITeam {
@@ -32,7 +41,7 @@ export class TeamEntity extends BaseEntity implements ITeam {
   rif: string;
 
   @OneToOne(() => AdminEntity, (admin) => admin.team)
-  admin: AdminEntity;
+  admin!: AdminEntity;
 
   @OneToMany(() => UserEntity, (users) => users.team)
   users!: UserEntity[];
@@ -43,10 +52,10 @@ export class TeamEntity extends BaseEntity implements ITeam {
   @OneToMany(() => TournamentEntity, (torunaments) => torunaments.team)
   tournaments!: TournamentEntity[];
 
-  constructor(name: string, rif: string, admin: AdminEntity) {
+  constructor(name: string, rif: string) {
     super();
     this.name = name;
     this.rif = rif;
-    this.admin = admin;
+    // this.admin = admin;
   }
 }
