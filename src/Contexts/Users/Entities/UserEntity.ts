@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { BaseEntity } from "../../../Shared/Contexts/BaseEntity";
-import { RoleEntity } from "../../Roles/Entities/RoleEntity";
+import { RoleEntity } from "../../Role/Entities/RoleEntity";
 import { TeamEntity } from "../../Team/Entities/TeamEntity";
 
 export interface IUser {

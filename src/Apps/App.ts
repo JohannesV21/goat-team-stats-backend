@@ -3,6 +3,9 @@ import { ServerConfig } from "../Configs/ServerConfig";
 import indexRoutes from "./Routes/IndexRoutes";
 import userRoutes from "./Routes/Users/UserRoutes";
 import adminRoutes from "./Routes/Admin/AdminRoutes";
+import teamRoutes from "./Routes/Team/TeamRoutes";
+import matchRoutes from "./Routes/Match/MatchRoutes";
+import roleRoutes from "./Routes/Role/RoleRoutes";
 
 class App extends ServerConfig {
   constructor() {
@@ -15,7 +18,9 @@ class App extends ServerConfig {
     this.app.use("/index", indexRoutes);
     this.app.use("/users", userRoutes);
     this.app.use("/admin", adminRoutes);
-    this.app.use("/team", adminRoutes);
+    this.app.use("/team", teamRoutes);
+    this.app.use("/match", matchRoutes);
+    this.app.use("/role", roleRoutes);
   }
 
   // Database initialization

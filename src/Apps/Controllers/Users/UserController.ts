@@ -5,7 +5,7 @@ import {
   IUserToUpdate,
   UserEntity,
 } from "../../../Contexts/Users/Entities/UserEntity";
-import roleService from "../../../Contexts/Roles/Services/RoleService";
+import roleService from "../../../Contexts/Role/Services/RoleService";
 import teamService from "../../../Contexts/Team/Services/TeamService";
 
 class UserController {
