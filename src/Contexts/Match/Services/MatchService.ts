@@ -32,6 +32,7 @@ export class MatchService implements IMatchService {
     try {
       const matchById = await this.MatchRepository.findOne({
         where: { id_match },
+        relations: { team: true, tournament: true },
       });
 
       if (!matchById) {

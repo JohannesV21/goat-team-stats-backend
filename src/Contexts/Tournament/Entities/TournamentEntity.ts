@@ -37,7 +37,9 @@ export class TournamentEntity extends BaseEntity implements ITournament {
   @OneToMany(() => MatchEntity, (matches) => matches.tournament)
   matches!: MatchEntity[];
 
-  @ManyToOne(() => TeamEntity, (team) => team.tournaments)
+  @ManyToOne(() => TeamEntity, (team) => team.tournaments, {
+    onDelete: "SET NULL",
+  })
   @JoinColumn({ name: "id_team" })
   team?: TeamEntity;
 

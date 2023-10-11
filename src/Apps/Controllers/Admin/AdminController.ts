@@ -6,6 +6,7 @@ import {
   IAdminToUpdate,
 } from "../../../Contexts/Admin/Entities/AdminEntity";
 import teamService from "../../../Contexts/Team/Services/TeamService";
+import { passwordEncrypt } from "../../../Helpers/Login/PasswordEncrypt";
 
 class AdminController {
   public async GetAllAdmins(_req: Request, res: Response): Promise<void> {
@@ -28,22 +29,14 @@ class AdminController {
     }
   }
 
-  public async GetAdminByEmail(req: Request, res: Response) {
-    try {
-      const { email } = req.body;
-
-      const adminByEmail = await adminService.GetAdminByEmail(email);
-      res.status(200).json(adminByEmail);
-    } catch (error) {
-      handleErrorResponse({ error, res });
-    }
-  }
-
   public async CreateAdmin(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
 
-      const dataToCreateAdmin = new AdminEntity(email, password);
+      //password encryption
+      const hashPassword = await passwordEncrypt(password);
+
+      const dataToCreateAdmin = new AdminEntity(email, hashPassword);
 
       const createAdmin = await adminService.CreateAdmin(dataToCreateAdmin);
       res.status(200).json(createAdmin);
@@ -57,9 +50,12 @@ class AdminController {
       const id_admin: number = Number(req.params.id_admin);
       const { email, password } = req.body;
 
+      //password encryption
+      const hashPassword = await passwordEncrypt(password);
+
       const adminToUpdate: IAdminToUpdate = {
         email,
-        password,
+        password: hashPassword,
       };
 
       const updateAdmin = await adminService.UpdateAdmin(

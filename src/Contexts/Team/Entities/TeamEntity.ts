@@ -4,7 +4,6 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { BaseEntity } from "../../../Shared/Contexts/BaseEntity";
@@ -45,13 +44,17 @@ export class TeamEntity extends BaseEntity implements ITeam {
   @JoinColumn({ name: "id_admin" })
   admin: AdminEntity;
 
-  @OneToMany(() => UserEntity, (users) => users.team)
+  @OneToMany(() => UserEntity, (users) => users.team, { onDelete: "CASCADE" })
   users!: UserEntity[];
 
-  @OneToMany(() => MatchEntity, (matches) => matches.team)
+  @OneToMany(() => MatchEntity, (matches) => matches.team, {
+    onDelete: "CASCADE",
+  })
   matches!: MatchEntity[];
 
-  @OneToMany(() => TournamentEntity, (torunaments) => torunaments.team)
+  @OneToMany(() => TournamentEntity, (torunaments) => torunaments.team, {
+    onDelete: "SET NULL",
+  })
   tournaments!: TournamentEntity[];
 
   constructor(name: string, rif: string, admin: AdminEntity) {

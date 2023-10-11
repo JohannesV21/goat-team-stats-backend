@@ -58,7 +58,10 @@ export class MatchEntity extends BaseEntity implements IMatch {
   @Column({ nullable: false })
   fouls_comitted: number;
 
-  @ManyToOne(() => TeamEntity, (team) => team.matches)
+  @ManyToOne(() => TeamEntity, (team) => team.matches, {
+    onDelete: "CASCADE",
+    nullable: false,
+  })
   @JoinColumn({ name: "id_team" })
   team: TeamEntity;
 
