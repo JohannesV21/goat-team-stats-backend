@@ -60,6 +60,8 @@ export class AdminService implements IAdminService {
         where: { email },
       });
 
+      console.log("email service", email);
+
       if (!adminByEmail) {
         throw new ErrorResponse({
           message: "Error to find admin",
