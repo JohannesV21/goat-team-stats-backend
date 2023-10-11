@@ -10,6 +10,7 @@ export class AdminResponse extends BaseResponse {
 export interface IAdminService {
   GetAllAdmins(): Promise<AdminEntity[]>;
   GetAdminById(id_admin: number): Promise<AdminEntity>;
+  GetAdminByEmail(email: string): Promise<AdminEntity>;
   CreateAdmin(admin: AdminEntity): Promise<AdminResponse>;
   UpdateAdmin(
     id_admin: number,

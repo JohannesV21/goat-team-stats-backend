@@ -21,10 +21,19 @@ class AdminController {
     try {
       const id_admin: number = Number(req.params.id_admin);
 
-      console.log(id_admin);
-
       const adminById = await adminService.GetAdminById(id_admin);
       res.status(200).json(adminById);
+    } catch (error) {
+      handleErrorResponse({ error, res });
+    }
+  }
+
+  public async GetAdminByEmail(req: Request, res: Response) {
+    try {
+      const { email } = req.body;
+
+      const adminByEmail = await adminService.GetAdminByEmail(email);
+      res.status(200).json(adminByEmail);
     } catch (error) {
       handleErrorResponse({ error, res });
     }

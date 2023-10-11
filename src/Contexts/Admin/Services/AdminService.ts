@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { Repository, PrimaryGeneratedColumn } from "typeorm";
 import { AdminResponse, IAdminService } from "./Interfaces/IAdminService";
 import { AdminEntity, IAdminToUpdate } from "../Entities/AdminEntity";
 import { AppDataSource } from "../../../Configs/DBConfig";
@@ -40,6 +40,34 @@ export class AdminService implements IAdminService {
         });
       } else {
         return adminById;
+      }
+    } catch (error) {
+      console.error(error);
+
+      if (error instanceof ErrorResponse) throw error;
+      else
+        throw new ErrorResponse({
+          message: "Error to getting admin in the database",
+          statusCode: 500,
+          error,
+        });
+    }
+  }
+
+  public async GetAdminByEmail(email: string): Promise<AdminEntity> {
+    try {
+      const adminByEmail = await this.AdminRepository.findOne({
+        where: { email },
+      });
+
+      if (!adminByEmail) {
+        throw new ErrorResponse({
+          message: "Error to find admin",
+          statusCode: 404,
+          error: "email not found",
+        });
+      } else {
+        return adminByEmail;
       }
     } catch (error) {
       console.error(error);
