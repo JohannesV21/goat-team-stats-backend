@@ -1,6 +1,8 @@
 import {
   Column,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -18,20 +20,29 @@ export interface ITeam {
   admin: AdminEntity;
 }
 
-export type ITeamToUpdate = Omit<ITeam, "id_team">;
+// export type ITeamToUpdate = Omit<ITeam, "id_team">;
+
+export interface ITeamToUpdate {
+  name: string;
+  rif: string;
+  users?: UserEntity;
+  matches?: MatchEntity;
+  tournaments?: TournamentEntity;
+}
 
 @Entity({ name: "Teams" })
 export class TeamEntity extends BaseEntity implements ITeam {
   @PrimaryGeneratedColumn()
   id_team!: number;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   name: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   rif: string;
 
-  @OneToOne(() => AdminEntity, (admin) => admin.team)
+  @ManyToOne(() => AdminEntity, (admin) => admin.teams)
+  @JoinColumn({ name: "id_admin" })
   admin: AdminEntity;
 
   @OneToMany(() => UserEntity, (users) => users.team)

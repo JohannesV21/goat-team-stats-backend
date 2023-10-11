@@ -15,7 +15,7 @@ export interface ITournament {
   name: string;
   init_date: string;
   end_date: string;
-  team: TeamEntity;
+  team?: TeamEntity;
 }
 
 export type ITournamentToUpdate = Omit<ITournament, "id_tournament">;
@@ -39,13 +39,13 @@ export class TournamentEntity extends BaseEntity implements ITournament {
 
   @ManyToOne(() => TeamEntity, (team) => team.tournaments)
   @JoinColumn({ name: "id_team" })
-  team: TeamEntity;
+  team?: TeamEntity;
 
   constructor(
     name: string,
     init_date: string,
     end_date: string,
-    team: TeamEntity
+    team?: TeamEntity
   ) {
     super();
     this.name = name;

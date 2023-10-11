@@ -21,7 +21,7 @@ export interface IMatch {
   completed_passes: number;
   fouls_comitted: number;
   team: TeamEntity;
-  tournament: TournamentEntity;
+  tournament?: TournamentEntity;
 }
 
 export type IMatchToUpdate = Omit<IMatch, "id_match">;
@@ -64,7 +64,7 @@ export class MatchEntity extends BaseEntity implements IMatch {
 
   @ManyToOne(() => TournamentEntity, (tournament) => tournament.matches)
   @JoinColumn({ name: "id_tournament" })
-  tournament: TournamentEntity;
+  tournament?: TournamentEntity;
 
   constructor(
     date: string,
@@ -77,7 +77,7 @@ export class MatchEntity extends BaseEntity implements IMatch {
     completed_passes: number,
     fouls_comitted: number,
     team: TeamEntity,
-    tournament: TournamentEntity
+    tournament?: TournamentEntity
   ) {
     super();
     this.date = date;

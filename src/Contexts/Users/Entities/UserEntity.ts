@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { BaseEntity } from "../../../Shared/Contexts/BaseEntity";
-import { RoleEntity } from "../../Roles/Entities/RoleEntity";
+import { RoleEntity } from "../../Role/Entities/RoleEntity";
 import { TeamEntity } from "../../Team/Entities/TeamEntity";
 
 export interface IUser {
@@ -36,7 +36,7 @@ export class UserEntity extends BaseEntity implements IUser {
   @Column({ nullable: false })
   birthdate: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   cedula: string;
 
   @Column({ nullable: false })
