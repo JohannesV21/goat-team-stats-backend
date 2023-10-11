@@ -20,7 +20,7 @@ export class TournamentService implements ITournamentService {
   public async GetAllTournaments(): Promise<TournamentEntity[]> {
     try {
       const allTournaments = await this.TournamentRepository.find({
-        relations: { team: true, matches: true },
+        relations: { team: { matches: true } },
       });
       return allTournaments;
     } catch (error) {
@@ -104,6 +104,7 @@ export class TournamentService implements ITournamentService {
       dbTournament.name = tournamentUpdate.name;
       dbTournament.init_date = tournamentUpdate.init_date;
       dbTournament.end_date = tournamentUpdate.end_date;
+      dbTournament.team = tournamentUpdate.team;
 
       const updateTournament = await this.TournamentRepository.save(
         dbTournament

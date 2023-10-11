@@ -5,6 +5,7 @@ import {
   ITournamentToUpdate,
   TournamentEntity,
 } from "../../../Contexts/Tournament/Entities/TournamentEntity";
+import teamService from "../../../Contexts/Team/Services/TeamService";
 
 class TournamentController {
   public async GetAllTournaments(_req: Request, res: Response): Promise<void> {
@@ -31,12 +32,13 @@ class TournamentController {
 
   public async CreateTournament(req: Request, res: Response): Promise<void> {
     try {
-      const { name, init_date, end_date } = req.body;
+      const { name, init_date, end_date, team } = req.body;
 
       const dataToCreateTournament = new TournamentEntity(
         name,
         init_date,
-        end_date
+        end_date,
+        team
       );
 
       const createTournament = await tournamentService.CreateTournament(
@@ -51,12 +53,15 @@ class TournamentController {
   public async UpdateUser(req: Request, res: Response): Promise<void> {
     try {
       const id_tournament: number = Number(req.params.id_tournament);
-      const { name, init_date, end_date } = req.body;
+      const { name, init_date, end_date, team } = req.body;
+
+      const teamDB = await teamService.GetTeamById(team);
 
       const tournamentToUpdate: ITournamentToUpdate = {
         name,
         init_date,
         end_date,
+        team: teamDB,
       };
 
       const updateTournament = await tournamentService.UpdateTournament(
