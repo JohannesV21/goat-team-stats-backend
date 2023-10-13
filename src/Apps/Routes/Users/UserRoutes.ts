@@ -8,6 +8,7 @@ class UserRoutes implements IRoutes {
   constructor() {
     this.router.get("/", userController.GetAllUsers);
     this.router.get("/:id_user", userController.GetUserById);
+    this.router.get("/team/:id_team", userController.GetAllUsersByTeam);
     this.router.post("/", userController.CreateUser);
     this.router.put("/:id_user", userController.UpdateUser);
     this.router.delete("/:id_user", userController.DeleteUser);

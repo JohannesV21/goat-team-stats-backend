@@ -34,7 +34,7 @@ export class TeamService implements ITeamService {
       const dbTeam = await this.TeamRepository.findOne({
         where: { id_team },
         relations: { users: { role: true } },
-        order: { createdAt: "DESC" },
+        order: { createdAt: "DESC", users: { createdAt: "DESC" } },
       });
 
       if (!dbTeam) {
