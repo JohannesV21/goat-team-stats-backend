@@ -46,7 +46,10 @@ export class UserEntity extends BaseEntity implements IUser {
   @JoinColumn({ name: "id_role" })
   role: RoleEntity;
 
-  @ManyToOne(() => TeamEntity, (team) => team.users, { onDelete: "CASCADE" })
+  @ManyToOne(() => TeamEntity, (team) => team.users, {
+    onDelete: "CASCADE",
+    nullable: false,
+  })
   @JoinColumn({ name: "id_team" })
   team: TeamEntity;
 

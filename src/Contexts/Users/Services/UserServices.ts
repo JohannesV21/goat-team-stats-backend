@@ -1,8 +1,10 @@
-import { Repository } from "typeorm";
+import { Not, Repository } from "typeorm";
 import { IUserService, UserResponse } from "./Interfaces/IUserService";
 import { IUserToUpdate, UserEntity } from "../Entities/UserEntity";
 import { AppDataSource } from "../../../Configs/DBConfig";
 import { ErrorResponse } from "../../../Shared/Contexts/ErrorResponse";
+import roleService from "../../Role/Services/RoleService";
+import teamService from "../../Team/Services/TeamService";
 
 export class UserService implements IUserService {
   private UserRepository: Repository<UserEntity>;
@@ -62,6 +64,48 @@ export class UserService implements IUserService {
 
   public async CreateUser(user: UserEntity): Promise<UserResponse> {
     try {
+      const role = Number(user.role);
+      const teamID = Number(user.team);
+
+      // find role by id
+      const roleById = await roleService.GetRoleById(role);
+
+      if (!roleById) {
+        throw new ErrorResponse({
+          message: "Invalid role.",
+          statusCode: 400,
+          error: "Invalid role",
+        });
+      }
+
+      // find team by id
+      const teamById = await teamService.GetTeamById(teamID);
+
+      if (!teamById) {
+        throw new ErrorResponse({
+          message: "Invalid team.",
+          statusCode: 400,
+          error: "Invalid team",
+        });
+      }
+
+      // validation if there is already a technical director, do not create the user and return an error
+      if (roleById.id_role === 1) {
+        const existingDirectorTecnico = await this.UserRepository.findOne({
+          where: { team: { id_team: teamById.id_team }, role: { id_role: 1 } },
+          relations: ["team", "role"],
+        });
+
+        if (existingDirectorTecnico) {
+          throw new ErrorResponse({
+            message: "The team already has a technical director.",
+            statusCode: 400,
+            error: "Team already has a director",
+          });
+        }
+      }
+
+      // user creation after validations
       const createUser = await this.UserRepository.save(user);
       return new UserResponse("User created successfully", 200, createUser);
     } catch (error) {
@@ -73,6 +117,7 @@ export class UserService implements IUserService {
     }
   }
 
+  // service to update user
   public async UpdateUser(
     id_user: number,
     userUpdate: IUserToUpdate

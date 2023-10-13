@@ -15,6 +15,28 @@ export class MatchService implements IMatchService {
     try {
       const allMatches = await this.MatchRepository.find({
         relations: { team: true, tournament: true },
+        order: { createdAt: "DESC" },
+      });
+      return allMatches;
+    } catch (error) {
+      console.error(error);
+
+      throw new ErrorResponse({
+        message: "Error to get matches",
+        statusCode: 500,
+        error,
+      });
+    }
+  }
+
+  public async GetAllMatchesByTournament(
+    id_tournament: number
+  ): Promise<MatchEntity[]> {
+    try {
+      const allMatches = await this.MatchRepository.find({
+        relations: { team: true, tournament: true },
+        order: { createdAt: "DESC" },
+        where: { tournament: { id_tournament } },
       });
       return allMatches;
     } catch (error) {
@@ -89,6 +111,7 @@ export class MatchService implements IMatchService {
         });
 
       dbMatch.date = matchUpdate.date;
+      dbMatch.opponent_name = matchUpdate.opponent_name;
       dbMatch.team_goals = matchUpdate.team_goals;
       dbMatch.opponent_goals = matchUpdate.opponent_goals;
       dbMatch.yellow_cards = matchUpdate.yellow_cards;

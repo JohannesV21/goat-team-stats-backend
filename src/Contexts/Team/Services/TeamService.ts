@@ -15,6 +15,7 @@ export class TeamService implements ITeamService {
     try {
       const allTeams = await this.TeamRepository.find({
         relations: { admin: true, users: { role: true } },
+        order: { createdAt: "DESC", users: { createdAt: "DESC" } },
       });
       return allTeams;
     } catch (error) {
@@ -30,7 +31,11 @@ export class TeamService implements ITeamService {
 
   public async GetTeamById(id_team: number): Promise<TeamEntity> {
     try {
-      const dbTeam = await this.TeamRepository.findOne({ where: { id_team } });
+      const dbTeam = await this.TeamRepository.findOne({
+        where: { id_team },
+        relations: { users: { role: true } },
+        order: { createdAt: "DESC" },
+      });
 
       if (!dbTeam) {
         throw new ErrorResponse({

@@ -12,6 +12,7 @@ import { TournamentEntity } from "../../Tournament/Entities/TournamentEntity";
 export interface IMatch {
   id_match: number;
   date: string;
+  opponent_name: string;
   team_goals: number;
   opponent_goals: number;
   yellow_cards: number;
@@ -21,7 +22,7 @@ export interface IMatch {
   completed_passes: number;
   fouls_comitted: number;
   team: TeamEntity;
-  tournament?: TournamentEntity;
+  tournament: TournamentEntity;
 }
 
 export type IMatchToUpdate = Omit<IMatch, "id_match">;
@@ -33,6 +34,9 @@ export class MatchEntity extends BaseEntity implements IMatch {
 
   @Column({ nullable: false })
   date: string;
+
+  @Column({ nullable: false })
+  opponent_name: string;
 
   @Column({ nullable: false })
   team_goals: number;
@@ -65,12 +69,16 @@ export class MatchEntity extends BaseEntity implements IMatch {
   @JoinColumn({ name: "id_team" })
   team: TeamEntity;
 
-  @ManyToOne(() => TournamentEntity, (tournament) => tournament.matches)
+  @ManyToOne(() => TournamentEntity, (tournament) => tournament.matches, {
+    nullable: false,
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "id_tournament" })
-  tournament?: TournamentEntity;
+  tournament: TournamentEntity;
 
   constructor(
     date: string,
+    opponent_name: string,
     team_goals: number,
     opponent_goals: number,
     yellow_cards: number,
@@ -80,10 +88,11 @@ export class MatchEntity extends BaseEntity implements IMatch {
     completed_passes: number,
     fouls_comitted: number,
     team: TeamEntity,
-    tournament?: TournamentEntity
+    tournament: TournamentEntity
   ) {
     super();
     this.date = date;
+    this.opponent_name = opponent_name;
     this.team_goals = team_goals;
     this.opponent_goals = opponent_goals;
     this.yellow_cards = yellow_cards;
