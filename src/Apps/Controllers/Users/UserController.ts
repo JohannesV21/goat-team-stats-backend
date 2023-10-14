@@ -9,6 +9,7 @@ import roleService from "../../../Contexts/Role/Services/RoleService";
 import teamService from "../../../Contexts/Team/Services/TeamService";
 
 class UserController {
+  // Controller to get all users
   public async GetAllUsers(_req: Request, res: Response): Promise<void> {
     try {
       const allUsers = await userService.GetAllUsers();
@@ -18,6 +19,7 @@ class UserController {
     }
   }
 
+  // Controller to get user by id
   public async GetUserById(req: Request, res: Response): Promise<void> {
     try {
       const id_user: number = Number(req.params.id_user);
@@ -29,6 +31,20 @@ class UserController {
     }
   }
 
+  // Controller to get players users by id_team
+  public async GetAllUsersByTeam(req: Request, res: Response): Promise<void> {
+    try {
+      const id_team: number = Number(req.params.id_team);
+      console.log("Controlador", id_team);
+
+      const userById = await userService.GetAllUsersByTeam(id_team);
+      res.status(200).json(userById);
+    } catch (error) {
+      handleErrorResponse({ error, res });
+    }
+  }
+
+  // Controller to create user
   public async CreateUser(req: Request, res: Response): Promise<void> {
     try {
       const { first_name, last_name, birthdate, cedula, phone, role, team } =
@@ -51,6 +67,7 @@ class UserController {
     }
   }
 
+  // Controller to update user
   public async UpdateUser(req: Request, res: Response): Promise<void> {
     try {
       const id_user: number = Number(req.params.id_user);
@@ -77,6 +94,7 @@ class UserController {
     }
   }
 
+  // Controller to delete user
   public async DeleteUser(req: Request, res: Response): Promise<void> {
     try {
       const id_user: number = Number(req.params.id_user);

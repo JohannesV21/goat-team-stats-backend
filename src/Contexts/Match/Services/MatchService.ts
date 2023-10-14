@@ -15,6 +15,49 @@ export class MatchService implements IMatchService {
     try {
       const allMatches = await this.MatchRepository.find({
         relations: { team: true, tournament: true },
+        order: { createdAt: "DESC" },
+      });
+      return allMatches;
+    } catch (error) {
+      console.error(error);
+
+      throw new ErrorResponse({
+        message: "Error to get matches",
+        statusCode: 500,
+        error,
+      });
+    }
+  }
+
+  // get matches by tournament
+  public async GetAllMatchesByTournament(
+    id_tournament: number
+  ): Promise<MatchEntity[]> {
+    try {
+      const allMatches = await this.MatchRepository.find({
+        relations: { team: true, tournament: true },
+        order: { createdAt: "DESC" },
+        where: { tournament: { id_tournament } },
+      });
+      return allMatches;
+    } catch (error) {
+      console.error(error);
+
+      throw new ErrorResponse({
+        message: "Error to get matches",
+        statusCode: 500,
+        error,
+      });
+    }
+  }
+
+  // get matches by teams
+  public async GetAllMatchesByTeam(id_team: number): Promise<MatchEntity[]> {
+    try {
+      const allMatches = await this.MatchRepository.find({
+        relations: { team: true, tournament: true },
+        order: { createdAt: "DESC" },
+        where: { team: { id_team } },
       });
       return allMatches;
     } catch (error) {
@@ -65,7 +108,7 @@ export class MatchService implements IMatchService {
       console.error(error);
 
       throw new ErrorResponse({
-        message: "Error to create user",
+        message: "Error to create match",
         statusCode: 500,
         error,
       });
@@ -89,6 +132,7 @@ export class MatchService implements IMatchService {
         });
 
       dbMatch.date = matchUpdate.date;
+      dbMatch.opponent_name = matchUpdate.opponent_name;
       dbMatch.team_goals = matchUpdate.team_goals;
       dbMatch.opponent_goals = matchUpdate.opponent_goals;
       dbMatch.yellow_cards = matchUpdate.yellow_cards;

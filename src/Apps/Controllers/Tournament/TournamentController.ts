@@ -37,8 +37,8 @@ class TournamentController {
       const dataToCreateTournament = new TournamentEntity(
         name,
         init_date,
-        end_date,
-        team
+        end_date
+        // team
       );
 
       const createTournament = await tournamentService.CreateTournament(
@@ -55,13 +55,13 @@ class TournamentController {
       const id_tournament: number = Number(req.params.id_tournament);
       const { name, init_date, end_date, team } = req.body;
 
-      const teamDB = await teamService.GetTeamById(team);
+      // const teamDB = await teamService.GetTeamById(team);
 
       const tournamentToUpdate: ITournamentToUpdate = {
         name,
         init_date,
         end_date,
-        team: teamDB,
+        // team: teamDB,
       };
 
       const updateTournament = await tournamentService.UpdateTournament(

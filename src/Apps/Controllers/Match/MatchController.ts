@@ -18,6 +18,33 @@ class MatchController {
     }
   }
 
+  public async GetAllMatchesByTournament(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const id_tournament: number = Number(req.params.id_tournament);
+
+      const allMatches = await matchService.GetAllMatchesByTournament(
+        id_tournament
+      );
+      res.status(200).json(allMatches);
+    } catch (error) {
+      handleErrorResponse({ error, res });
+    }
+  }
+
+  public async GetAllMatchesByTeam(req: Request, res: Response): Promise<void> {
+    try {
+      const id_team: number = Number(req.params.id_team);
+
+      const allMatches = await matchService.GetAllMatchesByTeam(id_team);
+      res.status(200).json(allMatches);
+    } catch (error) {
+      handleErrorResponse({ error, res });
+    }
+  }
+
   public async GetMatchById(req: Request, res: Response): Promise<void> {
     try {
       const id_match: number = Number(req.params.id_match);
@@ -33,6 +60,7 @@ class MatchController {
     try {
       const {
         date,
+        opponent_name,
         team_goals,
         opponent_goals,
         yellow_cards,
@@ -47,6 +75,7 @@ class MatchController {
 
       const dataToCreateMatch = new MatchEntity(
         date,
+        opponent_name,
         team_goals,
         opponent_goals,
         yellow_cards,
@@ -71,6 +100,7 @@ class MatchController {
       const id_match: number = Number(req.params.id_match);
       const {
         date,
+        opponent_name,
         team_goals,
         opponent_goals,
         yellow_cards,
@@ -90,6 +120,7 @@ class MatchController {
 
       const matchToUpdate: IMatchToUpdate = {
         date,
+        opponent_name,
         team_goals,
         opponent_goals,
         yellow_cards,

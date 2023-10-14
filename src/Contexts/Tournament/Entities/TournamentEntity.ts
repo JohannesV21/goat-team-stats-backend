@@ -25,7 +25,7 @@ export class TournamentEntity extends BaseEntity implements ITournament {
   @PrimaryGeneratedColumn()
   id_tournament!: number;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   name: string;
 
   @Column({ nullable: false })
@@ -34,7 +34,9 @@ export class TournamentEntity extends BaseEntity implements ITournament {
   @Column({ nullable: false })
   end_date: string;
 
-  @OneToMany(() => MatchEntity, (matches) => matches.tournament)
+  @OneToMany(() => MatchEntity, (matches) => matches.tournament, {
+    onDelete: "CASCADE",
+  })
   matches!: MatchEntity[];
 
   @ManyToOne(() => TeamEntity, (team) => team.tournaments, {
