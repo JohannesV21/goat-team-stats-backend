@@ -34,6 +34,17 @@ class MatchController {
     }
   }
 
+  public async GetAllMatchesByTeam(req: Request, res: Response): Promise<void> {
+    try {
+      const id_team: number = Number(req.params.id_team);
+
+      const allMatches = await matchService.GetAllMatchesByTeam(id_team);
+      res.status(200).json(allMatches);
+    } catch (error) {
+      handleErrorResponse({ error, res });
+    }
+  }
+
   public async GetMatchById(req: Request, res: Response): Promise<void> {
     try {
       const id_match: number = Number(req.params.id_match);

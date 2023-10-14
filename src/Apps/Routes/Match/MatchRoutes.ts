@@ -12,6 +12,7 @@ class MatchRoutes implements IRoutes {
       "/tournament/:id_tournament",
       matchController.GetAllMatchesByTournament
     );
+    this.router.get("/team/:id_team", matchController.GetAllMatchesByTeam);
     this.router.post("/", matchController.CreateMatch);
     this.router.put("/:id_match", matchController.UpdateMatch);
     this.router.delete("/:id_match", matchController.DeleteMatch);

@@ -29,6 +29,7 @@ export class MatchService implements IMatchService {
     }
   }
 
+  // get matches by tournament
   public async GetAllMatchesByTournament(
     id_tournament: number
   ): Promise<MatchEntity[]> {
@@ -37,6 +38,26 @@ export class MatchService implements IMatchService {
         relations: { team: true, tournament: true },
         order: { createdAt: "DESC" },
         where: { tournament: { id_tournament } },
+      });
+      return allMatches;
+    } catch (error) {
+      console.error(error);
+
+      throw new ErrorResponse({
+        message: "Error to get matches",
+        statusCode: 500,
+        error,
+      });
+    }
+  }
+
+  // get matches by teams
+  public async GetAllMatchesByTeam(id_team: number): Promise<MatchEntity[]> {
+    try {
+      const allMatches = await this.MatchRepository.find({
+        relations: { team: true, tournament: true },
+        order: { createdAt: "DESC" },
+        where: { team: { id_team } },
       });
       return allMatches;
     } catch (error) {
@@ -87,7 +108,7 @@ export class MatchService implements IMatchService {
       console.error(error);
 
       throw new ErrorResponse({
-        message: "Error to create user",
+        message: "Error to create match",
         statusCode: 500,
         error,
       });
